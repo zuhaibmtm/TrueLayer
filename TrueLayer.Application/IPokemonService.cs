@@ -8,5 +8,6 @@ namespace TrueLayer.Application
     public interface IPokemonService
     {
         public string GetPokemonDesctiption(string name);
+        public string ShakespearText(string text);
     }
 }

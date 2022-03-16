@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{D1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrueLayer.Application.Tests", "TrueLayer.Application.Tests\TrueLayer.Application.Tests.csproj", "{F892EEA9-8187-4CD1-A168-2DFFF32634BE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{E858A6F7-CA35-4DE5-8DBC-92561737E3E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrueLayer.IntegrationTests", "TrueLayer.IntegrationTests\TrueLayer.IntegrationTests.csproj", "{3051D77D-F164-4892-888B-2F8BBBEA045E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +33,17 @@ Global
 		{F892EEA9-8187-4CD1-A168-2DFFF32634BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F892EEA9-8187-4CD1-A168-2DFFF32634BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F892EEA9-8187-4CD1-A168-2DFFF32634BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3051D77D-F164-4892-888B-2F8BBBEA045E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3051D77D-F164-4892-888B-2F8BBBEA045E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3051D77D-F164-4892-888B-2F8BBBEA045E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3051D77D-F164-4892-888B-2F8BBBEA045E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F892EEA9-8187-4CD1-A168-2DFFF32634BE} = {D1EFC716-71D9-4EFE-8B03-A65F3B6AC9A4}
+		{3051D77D-F164-4892-888B-2F8BBBEA045E} = {E858A6F7-CA35-4DE5-8DBC-92561737E3E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C03F4070-119B-48C8-9349-63092FFDA39F}

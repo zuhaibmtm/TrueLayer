@@ -16,6 +16,7 @@ namespace TrueLayer.Application
         private PokeApiClient _pokeClient;
         public List<NamedApiResource<Pokemon>> pokemonList = null;
         NamedApiResource<Pokemon> pokemonRes = null;
+        private static Dictionary<string, string> cacheCheck = new Dictionary<string, string>();
 
 
         public PokemonService()
@@ -31,33 +32,46 @@ namespace TrueLayer.Application
             Pokemon pokemon = null;
             PokemonSpecies species = null;
             PokemonSpeciesFlavorTexts flavorText = null;
-            var clientResult = Task.Run(() => _pokeClient.GetNamedResourcePageAsync<Pokemon>(-1, 0, default)).Result;
-            pokemonList = clientResult.Results;
             string description = string.Empty;
 
-            if (pokemonList.Count() > 0)
+            if (!cacheCheck.ContainsKey(name.ToLower()))
             {
-                pokemonRes = pokemonList.FirstOrDefault(c => c.Name == name);
-            }
+                var clientResult = Task.Run(() => _pokeClient.GetNamedResourcePageAsync<Pokemon>(-1, 0, default)).Result;
+                pokemonList = clientResult.Results;
 
-            if (pokemonRes != null)
-            {
-                pokemon = Task.Run(() => _pokeClient.GetResourceAsync<Pokemon>(pokemonRes)).Result;
-            }
 
-            if (pokemon != null)
-            {
-                species = Task.Run(() => _pokeClient.GetResourceAsync<PokemonSpecies>(pokemon.Species)).Result; 
-            }
+                if (pokemonList.Count() > 0)
+                {
+                    pokemonRes = pokemonList.FirstOrDefault(c => c.Name == name);
+                }
 
-            if (species != null)
-            {
-                flavorText = species.FlavorTextEntries.FirstOrDefault(c => c.Language.Name == "en");
-            }
+                if (pokemonRes != null)
+                {
+                    pokemon = Task.Run(() => _pokeClient.GetResourceAsync<Pokemon>(pokemonRes)).Result;
+                }
 
-            if (flavorText != null)
+                if (pokemon != null)
+                {
+                    species = Task.Run(() => _pokeClient.GetResourceAsync<PokemonSpecies>(pokemon.Species)).Result;
+                }
+
+                if (species != null)
+                {
+                    flavorText = species.FlavorTextEntries.FirstOrDefault(c => c.Language.Name == "en");
+                }
+
+                if (flavorText != null)
+                {
+                    description = ShakespearText(flavorText?.FlavorText);
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        cacheCheck.Add(name.ToLower(), description);
+                    }
+                }
+            }
+            else
             {
-                description = ShakespearText(flavorText?.FlavorText);
+                description = cacheCheck[name.ToLower()];
             }
 
             return description;
@@ -65,7 +79,7 @@ namespace TrueLayer.Application
         }
 
 
-        private string ShakespearText (string text)
+        public string ShakespearText(string text)
         {
             string finalText = string.Empty;
             HttpClient httpClient = new HttpClient();
@@ -79,7 +93,7 @@ namespace TrueLayer.Application
 
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             string data = HttpUtility.UrlEncode(cleanText);
-            var httpResponse = Task.Run(() => httpClient.GetAsync($"translate/" +$"shakespeare?text=" + $"{data}")).Result;
+            var httpResponse = Task.Run(() => httpClient.GetAsync($"translate/" + $"shakespeare?text=" + $"{data}")).Result;
 
             if (httpResponse.IsSuccessStatusCode)
             {

@@ -3,41 +3,37 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using PokeApiNet;
 
 namespace TrueLayer.Application.Tests
 {
     [TestClass]
-    public class PokemonServiceTest
+    public class PokemonTranslatorServiceTest
     {
-        //[TestInitialize]
+        private Mock<PokeApiClient> mokPokeClient;
+        private Mock<IPokemonService> mokPokemonService;
+        private PokemonService PokemonService;
+        [TestInitialize]
+        public virtual void Setup()
+        {
+            mokPokeClient = new Mock<PokeApiClient>();
+            mokPokemonService = new Mock<IPokemonService>();
+        }
 
-        //private Mock<PokemonService> mockPokemonService;
+        [TestMethod]
+        public void GetPokemon_description()
+        {
+            //Arrange
+            string shakespearText = "Hi this is charizard";
+            string name = "charizard";
+            PokemonService = new PokemonService(mokPokeClient.Object);
+            mokPokemonService.Setup(x => x.ShakespearText(shakespearText)).Returns("Hi this is charizard shakespear description");
 
+            //Act
+            var result = PokemonService.GetPokemonDesctiption(name);
 
-        //public virtual void Setup()
-        //{
-        //    mockPokemonService = new Mock<PokemonService>();
-        //}
-
-
-        //[TestMethod]
-        //public async Task GetPokemonTranslation_Should_ReturnPokemon()
-        //{
-        //    //Arrange
-        //    string name = "pikachu";
-        //    mockPokeApiService.Setup(c => c.GetPokemonDescription(
-        //        name)).Returns(Task.FromResult("description"));
-
-        //    mockShakeService.Setup(c => c.TranslateText(
-        //        It.IsAny<string>())).Returns(
-        //        Task.FromResult("shake description"));
-
-        //    //Act
-        //    var result = await ptService.GetPokemonTranslation(name);
-
-        //    //Assert
-        //    Assert.IsTrue(!string.IsNullOrEmpty(result.description));
-        //    Assert.IsTrue(!string.IsNullOrEmpty(result.name));
-        //}
+            //Assert
+            Assert.IsTrue(!string.IsNullOrEmpty(result));
+        }
     }
 }
