@@ -69,15 +69,17 @@ namespace TrueLayer.Application
         {
             string finalText = string.Empty;
             HttpClient httpClient = new HttpClient();
-            string url = "https://api.funtranslations.com/translate/shakespeare.json?text=";
             var cleanText = text.Replace("\n", " ").Replace("\r", " ");
 
+            httpClient = new HttpClient()
+            {
+                BaseAddress = new System.Uri(
+                    "https://api.funtranslations.com/")
+            };
 
-            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-
-            var json = JsonConvert.SerializeObject(cleanText);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var httpResponse = Task.Run(() => httpClient.PostAsync(url, data)).Result;
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string data = HttpUtility.UrlEncode(cleanText);
+            var httpResponse = Task.Run(() => httpClient.GetAsync($"translate/" +$"shakespeare?text=" + $"{data}")).Result;
 
             if (httpResponse.IsSuccessStatusCode)
             {
