@@ -11,9 +11,9 @@ namespace TrueLayer.IntegrationTests
     {
         private IPokemonService _pokemonService;
 
-        public PokemonServiceIntegrationTest(IPokemonService pokemonService)
+        public PokemonServiceIntegrationTest()
         {
-            _pokemonService = pokemonService;
+            _pokemonService = new PokemonService();
         }
 
 
